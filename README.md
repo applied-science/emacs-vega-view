@@ -11,6 +11,7 @@ tools on your path. The easiest way to arrange that is to install the
 latest version with using `npm`:
 
 ```sh
+npm install -g vega-lite
 npm install -g vega-cli
 ```
 
