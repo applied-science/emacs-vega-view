@@ -54,19 +54,26 @@ resulting SVG in `vega-buffer` using image-mode ."
     (setq buffer-read-only nil) ; cider likes to set results buffers read-only
     (erase-buffer)
     (insert json-string)
-    (shell-command-on-region (buffer-end -1)
-                             (buffer-end 1)
-                             (string-join `(,vega-view--vega-command ,(or vega-view-base-directory default-directory)))
-                             vega-buffer)
-    (image-mode)
+    ;; Only switch the output buffer to image-mode if the command was
+    ;; successful so that error text will be visible in the buffer.
+    (when (= 0 (shell-command-on-region (buffer-end -1)
+                                        (buffer-end 1)
+                                        (string-join `(,vega-view--vega-command
+                                                       ,(or vega-view-base-directory default-directory)))
+                                        vega-buffer))
+      (image-mode))
     (display-buffer vega-buffer)))
 
 (defun vega-view--elisp (elisp-form-string vega-buffer)
-  "Parses `elisp-form-string`, evaluates it, then converts the resulting form to JSON and passes it on to vega-view--json to display in `vega-buffer`."
+  "Parses `elisp-form-string`, evaluates it, then converts the
+resulting form to JSON and passes it on to vega-view--json to
+display in `vega-buffer`."
   (vega-view--json (json-encode (eval (read elisp-form-string))) vega-buffer))
 
 (defun vega-view--clojure (clojure-form-string vega-buffer)
-  "Evaluate `clojure-form-string` in the cider context of the buffer from which it is called, convert the result to JSON, then pass it to vega-view--json to display in `vega-buffer`."
+  "Evaluate `clojure-form-string` in the cider context of the
+buffer from which it is called, convert the result to JSON, then
+pass it to vega-view--json to display in `vega-buffer`."
   (assert (member 'cider-mode minor-mode-list)
           nil
           "view-view requires an active cider connection for use with clojure forms!")
@@ -87,6 +94,7 @@ resulting SVG in `vega-buffer` using image-mode ."
                                 (lambda (buffer warning)
                                   (cider-emit-into-popup-buffer buffer warning 'font-lock-warning-face t)))))
 
+;; TODO should come in "view-preceding-sexp" and "view-defun" versions
 (defun vega-view ()
   "Converts the preceding sexp (in supported languages) to JSON
 and passes it through the Vega command line tools, displaying the
