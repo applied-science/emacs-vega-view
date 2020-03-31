@@ -68,7 +68,7 @@ Placing the cursor after the final `}` and invoking `vega-view` will
 bring up a new window (in the emacs sense of the term) containing an
 SVG drawing made from this spec.
 
-![json example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/json-example.svg)
+![json example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/json-example.svg?sanitize=true)
 
 ### `elisp`
 
@@ -119,7 +119,7 @@ function:
      (type . "quantitative"))))
 ```
 
-![elisp example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/elisp-example.svg)
+![elisp example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/elisp-example.svg?sanitize=true)
 
 ### `clojure`
 
@@ -141,7 +141,7 @@ plot twenty random values as a line chart:
               :y {:field :b, :type "quantitative"}}}
 ```
 
-![clojure example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/clojure-example.svg)
+![clojure example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/clojure-example.svg?sanitize=true)
 
 ## TODO
 
