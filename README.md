@@ -18,8 +18,7 @@ npm install -g vega vega-lite vega-cli
 
 Vega-view currently supports a single interactive function,
 `vega-view`, that can be invoked at the end of a form to visualize it
-as a Vega graph. Currently, three kinds of Vega notation are
-supported:
+as a Vega plot. Currently, three kinds of Vega notation are supported:
 
 * `JSON`, which is passed directly to Vega.
 * `elisp`, which is evaluated and converted to `JSON` before being
@@ -40,8 +39,9 @@ mode-specific conversion described above, then pipes it through the
 Vega command line tools to convert the specification to an `SVG`
 drawing. The drawing -- or the errors produced by Vega while trying to
 produce it -- are then displayed in an `image-mode` buffer called
-`*vega*`. (N.B. you can toggle between viewing an `SVG` image in an
-`image-mode` buffer as image or text using `C-c C-c` in that buffer.)
+`*vega*`. (Note that you can toggle between viewing an `SVG` image in
+an `image-mode` buffer as image or text using `C-c C-c` in that
+buffer.)
 
 ### `JSON`
 
@@ -68,14 +68,16 @@ Placing the cursor after the final `}` and invoking `vega-view` will
 bring up a new window (in the emacs sense of the term) containing an
 SVG drawing made from this spec.
 
+![json example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/json-example.svg)
+
 ### `elisp`
 
 The code sample below was produced by invoking `pp-eval-last-sexp`
 after `(json-read-file "sample.json")` in the `*scratch*` buffer. The
 contents of `sample.json` are the same as in the `JSON` example above.
 
-If we place the cursor after the final parenthesis of this `elisp`, it
-will show the same drawing that was generated above.
+If we place the cursor after the final parenthesis of this `elisp`
+form, it will show the same drawing that was generated above.
 
 ``` emacs-lisp
 '(($schema . "https://vega.github.io/schema/vega-lite/v4.json")
@@ -95,10 +97,9 @@ will show the same drawing that was generated above.
       (type . "quantitative"))))
 ```
 
-Note that, because the selected `elisp` code is evaluated before being
-sent to Vega, one can produce programmatic graphs easily using only
-`elisp`, which includes access to the rest of the functions in
-`emacs`. For example, this code will plot a line chart of the `sin`
+Note that, because the `elisp` code is evaluated before being sent to
+Vega, one can produce programmatic graphs easily using only
+`elisp`. For example, this code will plot a line chart of the `sin`
 function:
 
 ``` emacs-lisp
@@ -118,12 +119,14 @@ function:
      (type . "quantitative"))))
 ```
 
+![elisp example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/elisp-example.svg)
+
 ### `clojure`
 
 Just as in the case of `elisp`, one can write whatever `clojure` code
 they prefer and see the result of evaluating it and passing it through
-Vega (NB cider must be active!). For example, this form will plot
-twenty random values as a line chart:
+Vega (note that cider must be active!). For example, this form will
+plot twenty random values as a line chart:
 
 ``` clojure
 {:data {:values (map hash-map
@@ -138,12 +141,14 @@ twenty random values as a line chart:
               :y {:field :b, :type "quantitative"}}}
 ```
 
+![clojure example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/clojure-example.svg)
+
 ## TODO
 
 The `vega-view` function should be split into two functions, one that
 produces a drawing in a similar manner to `eval-preceding-sexp` (as
-this `vega-view` currently does), and one that works like `eval-defun`
-(converting the top level `sexp` in which the cursor is situated).
+this `vega-view` does), and one that works like `eval-defun`
+(converting the top level `sexp`).
 
 Likewise, there should be an easy way to select between Vega-lite and
 full Vega. Perhaps using the universal argument?
