@@ -123,38 +123,19 @@ resulting SVG in the `*vega*` buffer."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; A test visualization
 
-;; '(($schema . "https://vega.github.io/schema/vega-lite/v4.json")
-;;   (description . "A simple bar chart with embedded data.")
-;;   (data
-;;    (values .
-;;            [((a . "A")
-;;              (b . 28))
-;;             ((a . "B")
-;;              (b . 55))
-;;             ((a . "C")
-;;              (b . 43))
-;;             ((a . "D")
-;;              (b . 91))
-;;             ((a . "E")
-;;              (b . 81))
-;;             ((a . "F")
-;;              (b . 53))
-;;             ((a . "G")
-;;              (b . 19))
-;;             ((a . "H")
-;;              (b . 87))
-;;             ((a . "I")
-;;              (b . 52))]))
-;;   (mark . "bar")
-;;   (encoding
-;;    (x
-;;     (field . "a")
-;;     (type . "ordinal")
-;;     (axis
-;;      (labelAngle . 0)))
-;;    (y
-;;     (field . "b")
-;;     (type . "quantitative"))))
+;; (require 'seq)
+
+;; `(($schema . "https://vega.github.io/schema/vega-lite/v4.json")
+;;  (description . "A simple bar chart with embedded data.")
+;;  (data
+;;   (values . ,(seq-map-indexed (lambda (x i) `((a . ,i) (b . ,(sin x))))
+;;                            '(0 1 2 3 4 5 6 7 8 9))))
+;;  (mark . "line")
+;;  (encoding
+;;   (x (field . "a")
+;;      (type . "ordinal") (axis (labelAngle . 0)))
+;;   (y (field . "b")
+;;      (type . "quantitative"))))
 
 ;; If you have some vega JSON around, try visualizing:
 ;;(json-read-file ...your file...)
