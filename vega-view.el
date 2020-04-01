@@ -33,6 +33,7 @@
 (unless (package-installed-p 'parseedn)
   (package-install 'parseedn))
 
+(require 'cl-lib)
 (require 'parseedn)
 
 (setq vega-view--supported-modes '(clojure-mode emacs-lisp-mode json-mode))
@@ -131,6 +132,8 @@ resulting SVG in the `*vega*` buffer."
 ;;   (values . ,(seq-map-indexed (lambda (x i) `((a . ,i) (b . ,(sin x))))
 ;;                            '(0 1 2 3 4 5 6 7 8 9))))
 ;;  (mark . "line")
+;;  (width . 800)
+;;  (height . 600)
 ;;  (encoding
 ;;   (x (field . "a")
 ;;      (type . "ordinal") (axis (labelAngle . 0)))
