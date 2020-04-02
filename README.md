@@ -99,24 +99,31 @@ form, it will show the same drawing that was generated above.
 
 Note that, because the `elisp` code is evaluated before being sent to
 Vega, one can produce programmatic graphs easily using only
-`elisp`. For example, this code will plot a line chart of the `sin`
-function:
+`elisp`. For example, this code will thread in the contents of a JSON
+data file to another example specification to plot the chart that
+follows:
 
 ``` emacs-lisp
-(require 'seq)
-
 `(($schema . "https://vega.github.io/schema/vega-lite/v4.json")
- (description . "A simple bar chart with embedded data.")
- (data
-  (values . ,(seq-map-indexed (lambda (x i) `((a . ,i) (b . ,(sin x))))
-                           '(0 1 2 3 4 5 6 7 8 9))))
- (mark . "line")
- (encoding
-  (x (field . "a")
-     (type . "ordinal") 
-     (axis (labelAngle . 0)))
-  (y (field . "b")
-     (type . "quantitative"))))
+  (data
+   (values . ,(json-read-file "/Users/jack/src/emacs-vega/data/movies.json")))
+  (transform . [((filter (and . [((field . "IMDB_Rating")
+                                  (valid . t))
+                                 ((field . "Rotten_Tomatoes_Rating")
+                                  (valid . t))])))])
+  (mark . "rect")
+  (width . 800)
+  (height . 600)
+  (encoding
+   (x (bin (maxbins . 60))
+      (field . "IMDB_Rating")
+      (type . "quantitative"))
+   (y (bin (maxbins . 40))
+      (field . "Rotten_Tomatoes_Rating")
+      (type . "quantitative"))
+   (color (aggregate . "count")
+          (type . "quantitative")))
+  (config (view (stroke . "transparent"))))
 ```
 
 ![elisp example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/elisp-example.svg?sanitize=true)
