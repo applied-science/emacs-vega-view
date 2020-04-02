@@ -36,7 +36,7 @@
 (require 'cl-lib)
 (require 'parseedn)
 
-(setq vega-view--supported-modes '(clojure-mode emacs-lisp-mode json-mode))
+(setq vega-view--supported-modes '(clojure-mode emacs-lisp-mode lisp-interaction-mode json-mode))
 (setq vega-view--vega-command "vl2svg -h -b ")
 
 (defvar vega-view-base-directory nil
@@ -116,6 +116,7 @@ resulting SVG in the `*vega*` buffer."
             "vega-view was unable to parse the preceding sexp!")
     (case major-mode
       ('clojure-mode (vega-view--clojure sexp-string vega-buffer))
+      ('lisp-interaction-mode (vega-view--elisp sexp-string vega-buffer))
       ('emacs-lisp-mode (vega-view--elisp sexp-string vega-buffer))
       ('json-mode (vega-view--json sexp-string vega-buffer)))))
 
