@@ -25,8 +25,9 @@ npm install -g canvas
 ## Usage
 
 Vega-view currently supports a single interactive function,
-`vega-view`, that can be invoked at the end of a form to visualize it
-as a Vega plot. Currently, three kinds of Vega notation are supported:
+`vega-view`, that can be invoked within a top-level form to visualize
+it as a Vega plot. Currently, three kinds of Vega notation are
+supported:
 
 * `JSON`, which is passed directly to Vega.
 * `elisp`, which is evaluated and converted to `JSON` before being
@@ -41,15 +42,15 @@ as a Vega plot. Currently, three kinds of Vega notation are supported:
   same format one would use with
   [Oz](https://github.com/metasoarous/oz).
 
-When `vega-view` is invoked it first identifies the preceding `sexp`
-(whatever that means for the language of the buffer), performs the
-mode-specific conversion described above, then pipes it through the
-Vega command line tools to convert the specification to an `SVG`
-drawing. The drawing -- or the errors produced by Vega while trying to
-produce it -- are then displayed in an `image-mode` buffer called
-`*vega*`. (Note that you can toggle between viewing an `SVG` image in
-an `image-mode` buffer as image or text using `C-c C-c` in that
-buffer.)
+When `vega-view` is invoked it first identifies the top-level
+surrounding `sexp` (whatever that means for the language of the
+buffer), performs the mode-specific conversion described above, then
+pipes it through the Vega command line tools to convert the
+specification to an `SVG` drawing. The drawing -- or the errors
+produced by Vega while trying to produce it -- are then displayed in
+an `image-mode` buffer called `*vega*`. (Note that you can toggle
+between viewing an `SVG` image in an `image-mode` buffer as image or
+text using `C-c C-c` in that buffer.)
 
 ### `JSON`
 
@@ -161,9 +162,11 @@ plot twenty random values as a line chart:
 ## TODO
 
 The `vega-view` function should be split into two functions, one that
-produces a drawing in a similar manner to `eval-preceding-sexp` (as
-this `vega-view` does), and one that works like `eval-defun`
-(converting the top level `sexp`).
+produces a drawing in a similar manner to `eval-preceding-sexp` and
+one that works like `eval-defun` (converting the top level `sexp`). We
+currently only support converting the top-level `sexp`, as that has
+turned out to be my most common use case.
 
 Likewise, there should be an easy way to select between Vega-lite and
-full Vega. Perhaps using the universal argument?
+full Vega. Perhaps by checking for the presence of a full Vega schema
+declaration?
