@@ -14,6 +14,14 @@ latest version with using `npm`:
 npm install -g vega vega-lite vega-cli
 ```
 
+If you need PNG support (for example, if your `emacs` hasn't been
+compiled with support for SVG rendering), you will also need to
+install the `canvas` package:
+
+```sh
+npm install -g canvas
+```
+
 ## Usage
 
 Vega-view currently supports a single interactive function,
