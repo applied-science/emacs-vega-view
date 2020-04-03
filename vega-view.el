@@ -36,7 +36,9 @@
 (require 'cl-lib)
 (require 'parseedn)
 
-(setq vega-view--supported-modes '(clojure-mode emacs-lisp-mode lisp-interaction-mode json-mode))
+(setq vega-view--supported-modes '(clojure-mode
+                                   emacs-lisp-mode lisp-interaction-mode
+                                   json-mode js-mode js2-mode))
 (setq vega-view--vega-command "vl2svg -h -b ")
 
 (defvar vega-view-base-directory nil
@@ -75,7 +77,7 @@ display in `vega-buffer`."
   "Evaluate `clojure-form-string` in the cider context of the
 buffer from which it is called, convert the result to JSON, then
 pass it to vega-view--json to display in `vega-buffer`."
-  (assert (member 'cider-mode minor-mode-list)
+  (cl-assert (member 'cider-mode minor-mode-list)
           nil
           "view-view requires an active cider connection for use with clojure forms!")
   (with-current-buffer vega-buffer
@@ -101,7 +103,7 @@ pass it to vega-view--json to display in `vega-buffer`."
 and passes it through the Vega command line tools, displaying the
 resulting SVG in the `*vega*` buffer."
   (interactive)
-  (assert (member major-mode vega-view--supported-modes)
+  (cl-assert (member major-mode vega-view--supported-modes)
           nil
           (format "vega-view currently supports buffers with these major modes: %s" vega-view--supported-modes))
   (let* ((bounds (if (eq major-mode 'clojure-mode)
@@ -111,14 +113,16 @@ resulting SVG in the `*vega*` buffer."
          (end (if (consp (cdr bounds)) (cadr bounds) (cdr bounds)))
          (sexp-string (buffer-substring-no-properties start end))
          (vega-buffer (get-buffer-create "*vega*")))
-    (assert (and (stringp sexp-string) (> (length sexp-string) 0))
+    (cl-assert (and (stringp sexp-string) (> (length sexp-string) 0))
             nil
             "vega-view was unable to parse the preceding sexp!")
-    (case major-mode
+    (cl-case major-mode
       ('clojure-mode (vega-view--clojure sexp-string vega-buffer))
       ('lisp-interaction-mode (vega-view--elisp sexp-string vega-buffer))
       ('emacs-lisp-mode (vega-view--elisp sexp-string vega-buffer))
-      ('json-mode (vega-view--json sexp-string vega-buffer)))))
+      ('json-mode (vega-view--json sexp-string vega-buffer))
+      ('js-mode (vega-view--json sexp-string vega-buffer))
+      ('js2-mode (vega-view--json sexp-string vega-buffer)))))
 
 (provide 'vega-view)
 
