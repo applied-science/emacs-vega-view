@@ -39,7 +39,8 @@
 (setq vega-view--supported-modes '(clojure-mode
                                    emacs-lisp-mode lisp-interaction-mode
                                    json-mode js-mode js2-mode))
-(setq vega-view--vega-command "vl2svg -h -b ")
+(setq vega-view--vega-svg-command "vl2svg -h -b ")
+(setq vega-view--vega-png-command "vl2png")
 
 (defvar vega-view-base-directory nil
   "If this value is set non-nil, vega-view will use it as the
@@ -52,6 +53,9 @@
 (defun vega-view--json (json-string vega-buffer)
   "Passes `json-string` through the Vega command line tools, displaying the
 resulting SVG in `vega-buffer` using image-mode ."
+  (cl-assert (or (image-type-available-p 'svg) (image-type-available-p 'png))
+             nil
+             "vega-view requires an emacs that supports either SVG or PNG in image-mode!")
   (with-current-buffer vega-buffer
     (fundamental-mode)
     (setq buffer-read-only nil) ; cider likes to set results buffers read-only
@@ -59,12 +63,16 @@ resulting SVG in `vega-buffer` using image-mode ."
     (insert json-string)
     ;; Only switch the output buffer to image-mode if the command was
     ;; successful so that error text will be visible in the buffer.
-    (when (= 0 (shell-command-on-region (buffer-end -1)
-                                        (buffer-end 1)
-                                        (string-join `(,vega-view--vega-command
-                                                       ,(or vega-view-base-directory default-directory)))
-                                        vega-buffer))
-      (image-mode))
+    (let ((coding-system-for-read 'raw-text) ; in case it's a PNG
+          (vega-view-command (if (image-type-available-p 'svg)
+                                 (string-join `(,vega-view--vega-svg-command
+                                                ,(or vega-view-base-directory default-directory)))
+                               vega-view--vega-png-command)))
+      (when (= 0 (shell-command-on-region (buffer-end -1)
+                                          (buffer-end 1)
+                                          vega-view-command
+                                          vega-buffer))
+        (image-mode)))
     (display-buffer vega-buffer)))
 
 (defun vega-view--elisp (elisp-form-string vega-buffer)
