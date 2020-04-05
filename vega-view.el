@@ -130,7 +130,6 @@ resulting SVG in the `*vega*` buffer."
 
 (provide 'vega-view)
 
-cider-pprint-eval-last-sexp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; A test visualization
 
