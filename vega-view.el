@@ -88,7 +88,8 @@ pass it to vega-view--json to display in `vega-buffer`."
   (with-current-buffer vega-buffer
     (setq cider-popup-output-marker (point-marker)))
   (cider-interactive-eval
-   clojure-form-string
+   ;; in case local printer settings would truncate the output
+   (format "(binding [*print-level* nil *print-length* nil] %s)" clojure-form-string)
    (nrepl-make-response-handler vega-buffer
                                 (lambda (buffer value)
                                   (vega-view--json (json-encode (parseedn-read-str value)) buffer))
@@ -131,6 +132,7 @@ resulting SVG in the `*vega*` buffer."
 
 (provide 'vega-view)
 
+cider-pprint-eval-last-sexp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; A test visualization
 
