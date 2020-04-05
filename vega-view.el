@@ -115,11 +115,9 @@ resulting SVG in the `*vega*` buffer."
                             (json-mode vega-view--json)
                             (js-mode vega-view--json)
                             (js2-mode vega-view--json)))
-         (mode-fn (assoc major-mode supported-modes)))
-    (cl-assert mode-fn
-               nil
-               (format "vega-view currently supports buffers with these major modes: %s"
-                       (mapcar #'car supported-modes)))
+         (mode-fn (or (assoc major-mode supported-modes)
+                      (error (format "vega-view currently supports buffers with these major modes: %s"
+                                     (mapcar #'car supported-modes))))))
     (let ((sexp-string (if (eq major-mode 'clojure-mode)
                            (cider-defun-at-point)
                          (thing-at-point 'defun 'no-props))))
