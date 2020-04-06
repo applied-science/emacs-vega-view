@@ -36,7 +36,8 @@
 (require 'cl-lib)
 (require 'parseedn)
 
-(setq vega-view--vega-svg-command "vl2svg -h -b ")
+(setq vega-view--vega-svg-command "vl2svg")
+(setq vega-view--vega-svg-args "-h -b ")
 (setq vega-view--vega-png-command "vl2png")
 
 (defvar vega-view-base-directory nil
@@ -62,13 +63,13 @@ resulting SVG in `vega-buffer` using image-mode ."
     ;; successful so any error text will be visible in the buffer.
     (let ((coding-system-for-read 'raw-text) ; in case it's a PNG
           (vega-view-command (if (image-type-available-p 'svg)
-                                 (string-join `(,vega-view--vega-svg-command
-                                                ,(or vega-view-base-directory default-directory)))
-                               vega-view--vega-png-command)))
-      (when (= 0 (shell-command-on-region (buffer-end -1)
-                                          (buffer-end 1)
-                                          vega-view-command
-                                          vega-buffer))
+                                 vega-view--vega-svg-command
+                               vega-view--vega-png-command))
+          (vega-view-args (if (image-type-available-p 'svg)
+                              (string-join `(,vega-view--vega-svg-args
+                                             ,(or vega-view-base-directory default-directory)))
+                            "")))
+      (when (= 0 (call-process-region (point-min) (point-max) vega-view-command t t nil vega-view-args))
         (image-mode)))
     (display-buffer vega-buffer)))
 
