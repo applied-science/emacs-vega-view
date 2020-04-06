@@ -119,11 +119,11 @@ resulting SVG in the `*vega*` buffer."
                       (error (format "vega-view currently supports buffers with these major modes: %s"
                                      (mapcar #'car supported-modes))))))
     (let ((sexp-string (if (eq major-mode 'clojure-mode)
-                           (cider-defun-at-point)
-                         (thing-at-point 'defun 'no-props))))
+                           (cider-sexp-at-point)
+                         (thing-at-point 'sexp 'no-props))))
       (cl-assert (and (stringp sexp-string) (> (length sexp-string) 0))
                  nil
-                 "vega-view was unable to parse the surrounding sexp!")
+                 "vega-view was unable to parse the preceding sexp!")
       (funcall (symbol-function (cadr mode-fn))
                sexp-string
                (get-buffer-create "*vega*")))))
@@ -136,18 +136,18 @@ resulting SVG in the `*vega*` buffer."
 ;; (require 'seq)
 
 ;; `(($schema . "https://vega.github.io/schema/vega-lite/v4.json")
-;;  (description . "A simple bar chart with embedded data.")
-;;  (data
-;;   (values . ,(seq-map-indexed (lambda (x i) `((a . ,i) (b . ,(sin x))))
-;;                            '(0 1 2 3 4 5 6 7 8 9))))
-;;  (mark . "line")
-;;  (width . 800)
-;;  (height . 600)
-;;  (encoding
-;;   (x (field . "a")
-;;      (type . "ordinal") (axis (labelAngle . 0)))
-;;   (y (field . "b")
-;;      (type . "quantitative"))))
+;;   (description . "A simple bar chart with embedded data.")
+;;   (data
+;;    (values . ,(seq-map-indexed (lambda (x i) `((a . ,i) (b . ,(sin x))))
+;;                                '(0 1 2 3 4 5 6 7 8 9))))
+;;   (mark . "line")
+;;   (width . 800)
+;;   (height . 600)
+;;   (encoding
+;;    (x (field . "a")
+;;       (type . "ordinal") (axis (labelAngle . 0)))
+;;    (y (field . "b")
+;;       (type . "quantitative"))))
 
 ;; If you have some vega JSON around, try visualizing:
 ;;(json-read-file ...your file...)
