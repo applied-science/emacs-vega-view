@@ -22,6 +22,26 @@ install the `canvas` package:
 npm install -g canvas
 ```
 
+## Configuration
+
+By default this library produces SVG output when used from an emacs
+that supports SVG. If you would prefer that it produce PNG -- for
+example, if your emacs has trouble displaying SVGs or the drawings you
+are producing would be very, very large as SVG (tens of thousands of
+embedded data points) -- you can set the var `vega-view-prefer-png` to
+any truth-y value to prefer PNGs:
+
+``` emacs-lisp
+(setq vega-view-prefer-png t)
+```
+
+In addition, `view-vega` defaults to using the current working
+directory of the buffer in which it is invoked. One can override by
+setting the var `vega-view-base-directory` to a specific
+directory. This can be useful if your specification refers to static
+assets using a relative path. Setting `vega-view-base-directory` back
+to a false-y value will return the default behavior.
+
 ## Usage
 
 Vega-view currently supports a single interactive function,

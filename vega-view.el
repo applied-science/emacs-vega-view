@@ -48,12 +48,20 @@
   specification makes reference by relative path to external
   resources, like external JSON datasets or geojson map data.")
 
+(defvar vega-view-prefer-png nil
+  "If this value is set non-nil, vega-view will always try to
+  render to PNG. Otherwise, it will use SVG whenever
+  possible. This is useful in situations where one's emacs can't
+  properly display SVG, but thinks it can, or for performance
+  when one is sure that the drawings will be smaller as PNG than
+  SVG.")
+
 (defun vega-view--json (json-string vega-buffer)
   "Passes `json-string` through the Vega command line tools, displaying the
 resulting SVG in `vega-buffer` using image-mode ."
   (cl-assert (or (image-type-available-p 'svg) (image-type-available-p 'png))
              nil
-             "vega-view requires an emacs that supports either SVG or PNG in image-mode!")
+             "vega-view requires an emacs that supports either SVG or PNG!")
   (with-current-buffer vega-buffer
     (fundamental-mode)
     (setq buffer-read-only nil) ; cider likes to set results buffers read-only
@@ -62,14 +70,17 @@ resulting SVG in `vega-buffer` using image-mode ."
     ;; Only switch the output buffer to image-mode if the command was
     ;; successful so any error text will be visible in the buffer.
     (let ((coding-system-for-read 'raw-text) ; in case it's a PNG
-          (vega-view-command (if (image-type-available-p 'svg)
-                                 vega-view--vega-svg-command
-                               vega-view--vega-png-command))
-          (vega-view-args (if (image-type-available-p 'svg)
-                              (string-join `(,vega-view--vega-svg-args
-                                             ,(or vega-view-base-directory default-directory)))
-                            "")))
-      (when (= 0 (call-process-region (point-min) (point-max) vega-view-command t t nil vega-view-args))
+          (vega-view-command (if (and (image-type-available-p 'svg)
+                                      (not vega-view-prefer-png))
+                                 `(,vega-view--vega-svg-command
+                                   ,(string-join `(,vega-view--vega-svg-args
+                                                   ,(or vega-view-base-directory default-directory))))
+                               `(,vega-view--vega-png-command ""))))
+      (when (= 0 (call-process-region (point-min)
+                                      (point-max)
+                                      (car vega-view-command)
+                                      t t nil
+                                      (cadr vega-view-command)))
         (image-mode)))
     (display-buffer vega-buffer)))
 
