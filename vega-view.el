@@ -120,7 +120,8 @@ pass it to vega-view--json to display in `vega-buffer`."
 and passes it through the Vega command line tools, displaying the
 resulting SVG in the `*vega*` buffer."
   (interactive)
-  (let* ((supported-modes '((clojure-mode vega-view--clojure)
+  (let* ((supported-modes '((cider-repl-mode vega-view--clojure)
+                            (clojure-mode vega-view--clojure)
                             (emacs-lisp-mode vega-view--elisp)
                             (lisp-interaction-mode vega-view--elisp)
                             (json-mode vega-view--json)
@@ -129,7 +130,8 @@ resulting SVG in the `*vega*` buffer."
          (mode-fn (or (assoc major-mode supported-modes)
                       (error (format "vega-view currently supports buffers with these major modes: %s"
                                      (mapcar #'car supported-modes))))))
-    (let ((sexp-string (if (eq major-mode 'clojure-mode)
+    (let ((sexp-string (if (or (eq major-mode 'clojure-mode)
+                               (eq major-mode 'cider-repl-mode))
                            (cider-sexp-at-point)
                          (thing-at-point 'sexp 'no-props))))
       (cl-assert (and (stringp sexp-string) (> (length sexp-string) 0))
