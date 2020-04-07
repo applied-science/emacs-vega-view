@@ -169,3 +169,7 @@ the current function does) and one that works like `eval-defun`
 Likewise, there should be an easy way to select between Vega-lite and
 full Vega. Perhaps by checking for the presence of a full Vega schema
 declaration?
+
+We currently `(set! *print-length* nil)` in the `cider` handler to
+avoid truncation of the return value from the user's clojure
+REPL. This is rude, and we should find a better way.

@@ -73,6 +73,16 @@ resulting SVG in `vega-buffer` using image-mode ."
         (image-mode)))
     (display-buffer vega-buffer)))
 
+;; debug version that just shows the output in the *vega* buffer
+;; (defun vega-view--json (json-string vega-buffer)
+;;   "Passes `json-string` through the Vega command line tools, displaying the
+;; resulting SVG in `vega-buffer` using image-mode ."
+;;   (with-current-buffer vega-buffer
+;;     (fundamental-mode)
+;;     (setq buffer-read-only nil) ; cider likes to set results buffers read-only
+;;     (erase-buffer)
+;;     (insert json-string)))
+
 (defun vega-view--elisp (elisp-form-string vega-buffer)
   "Parses `elisp-form-string`, evaluates it, then converts the
 resulting form to JSON and passes it on to vega-view--json to
@@ -84,13 +94,13 @@ display in `vega-buffer`."
 buffer from which it is called, convert the result to JSON, then
 pass it to vega-view--json to display in `vega-buffer`."
   (cl-assert (member 'cider-mode minor-mode-list)
-          nil
-          "view-view requires an active cider connection for use with clojure forms!")
+             nil
+             "view-view requires an active cider connection for use with clojure forms!")
   (with-current-buffer vega-buffer
     (setq cider-popup-output-marker (point-marker)))
   (cider-interactive-eval
    ;; in case local printer settings would truncate the output
-   (format "(binding [*print-level* nil *print-length* nil] %s)" clojure-form-string)
+   (format "(do (set! *print-length* nil) %s)" clojure-form-string)
    (nrepl-make-response-handler vega-buffer
                                 (lambda (buffer value)
                                   (vega-view--json (json-encode (parseedn-read-str value)) buffer))
