@@ -30,9 +30,6 @@
 ;; vega-view is an Emacs Lisp library for visualizing Vega
 ;; spcifications.
 
-(unless (package-installed-p 'parseedn)
-  (package-install 'parseedn))
-
 (require 'cl-lib)
 (require 'parseedn)
 
