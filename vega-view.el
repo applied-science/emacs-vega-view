@@ -34,29 +34,22 @@
 (require 'cl-lib)
 (require 'parseedn)
 
-(setq vega-view--vega-svg-command "vl2svg")
-(setq vega-view--vega-svg-args "-h -b ")
-(setq vega-view--vega-png-command "vl2png")
+;;; Code:
+
+(defvar vega-view--vega-svg-command "vl2svg"
+  "The local command to be invoked to convert a Vega JSON spec to SVG.")
+
+(defvar vega-view--vega-png-command "vl2png"
+  "The local command to be invoked to convert a Vega-lite JSON spec to SVG.")
 
 (defvar vega-view-base-directory nil
-  "If this value is set non-nil, vega-view will use it as the
-  base directory for resources loaded by the Vega command line
-  tools. Otherwise, the default directory of the buffer in which
-  view-vega is invoked will be used. This is useful if your Vega
-  specification makes reference by relative path to external
-  resources, like external JSON datasets or geojson map data.")
+  "If this value is set non-nil, vega view will use it as the base directory for resources loaded by the Vega command line tools.  Otherwise, the default directory of the buffer in which view-vega is invoked will be used.  This is useful if your Vega specification makes reference by relative path to external resources, like external JSON datasets or geojson map data.")
 
 (defvar vega-view-prefer-png nil
-  "If this value is set non-nil, vega-view will always try to
-  render to PNG. Otherwise, it will use SVG whenever
-  possible. This is useful in situations where one's emacs can't
-  properly display SVG, but thinks it can, or for performance
-  when one is sure that the drawings will be smaller as PNG than
-  SVG.")
+  "If this value is set non-nil, vega view will always try to render to PNG.  Otherwise, it will use SVG whenever possible.  This is useful in situations where one's Emacs can't properly display SVG, but thinks it can, or for performance when one is sure that the drawings will be smaller as PNG than SVG.")
 
 (defun vega-view--json (json-string vega-buffer)
-  "Passes `json-string` through the Vega command line tools, displaying the
-resulting SVG in `vega-buffer` using image-mode ."
+  "Passes `JSON-STRING` through the Vega command line tools, displaying the resulting SVG in `VEGA-BUFFER` using `image-mode' ."
   (cl-assert (or (image-type-available-p 'svg) (image-type-available-p 'png))
              nil
              "vega-view requires an emacs that supports either SVG or PNG!")
@@ -71,7 +64,7 @@ resulting SVG in `vega-buffer` using image-mode ."
           (vega-view-command (if (and (image-type-available-p 'svg)
                                       (not vega-view-prefer-png))
                                  `(,vega-view--vega-svg-command
-                                   ,(string-join `(,vega-view--vega-svg-args
+                                   ,(string-join `("-h -b "
                                                    ,(or vega-view-base-directory default-directory))))
                                `(,vega-view--vega-png-command ""))))
       (when (= 0 (call-process-region (point-min)
@@ -93,15 +86,11 @@ resulting SVG in `vega-buffer` using image-mode ."
 ;;     (insert json-string)))
 
 (defun vega-view--elisp (elisp-form-string vega-buffer)
-  "Parses `elisp-form-string`, evaluates it, then converts the
-resulting form to JSON and passes it on to vega-view--json to
-display in `vega-buffer`."
+  "Parse `ELISP-FORM-STRING`, evaluate it, then convert the resulting form to JSON and pass it on to `vega-view--json' to display in `VEGA-BUFFER`."
   (vega-view--json (json-encode (eval (read elisp-form-string))) vega-buffer))
 
 (defun vega-view--clojure (clojure-form-string vega-buffer)
-  "Evaluate `clojure-form-string` in the cider context of the
-buffer from which it is called, convert the result to JSON, then
-pass it to vega-view--json to display in `vega-buffer`."
+  "Evaluate `CLOJURE-FORM-STRING` in the cider context of the buffer from which it is called, convert the result to JSON, then pass it to `vega-view--json' to display in `VEGA-BUFFER`."
   (cl-assert (member 'cider-mode minor-mode-list)
              nil
              "view-view requires an active cider connection for use with clojure forms!")
@@ -125,9 +114,7 @@ pass it to vega-view--json to display in `vega-buffer`."
 
 ;; TODO should come in "view-preceding-sexp" and "view-defun" versions
 (defun vega-view ()
-  "Converts the preceding sexp (in supported languages) to JSON
-and passes it through the Vega command line tools, displaying the
-resulting SVG in the `*vega*` buffer."
+  "Convert the preceding sexp (in supported languages) to JSON and pass it through the Vega command line tools, then display the resulting SVG in the `*vega*` buffer."
   (interactive)
   (let* ((supported-modes '((cider-repl-mode vega-view--clojure)
                             (clojure-mode vega-view--clojure)
