@@ -2,11 +2,11 @@
 
 ;; Copyright (C) 2020 Jack Rusher
 
-;; Author: Jack RUsher <jack@appliedscience.studio>
+;; Author: Jack Rusher <jack@appliedscience.studio>
+;; URL: http://www.github.com/applied-science/emacs-vega-view
 ;; Created: 20200330
-;; Keywords: vega visualization clojure json
-;; Package-Version: 20200429.1
-;; Package-Requires: ((emacs "25") (parseedn "20191113.831"))
+;; Keywords: multimedia
+;; Package-Requires: ((emacs "25") (parseedn "0.1"))
 ;; Version: 0.1.0
 
 ;; This file is not part of GNU Emacs.
@@ -152,6 +152,8 @@ resulting SVG in the `*vega*` buffer."
 
 (provide 'vega-view)
 
+;;; vega-view.el ends here
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; An example visualization
 
@@ -173,3 +175,4 @@ resulting SVG in the `*vega*` buffer."
 
 ;; If you have some vega JSON around, try visualizing:
 ;;(json-read-file ...your file...)
+
