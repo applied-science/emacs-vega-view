@@ -3,8 +3,9 @@
 ;; Copyright (C) 2020 Jack Rusher
 
 ;; Author: Jack RUsher <jack@appliedscience.studio>
+;; Created: 20200330
 ;; Keywords: vega visualization clojure json
-;; Package-Version: 20200331.1
+;; Package-Version: 20200429.1
 ;; Package-Requires: ((emacs "25") (parseedn "20191113.831"))
 ;; Version: 0.1.0
 
@@ -29,9 +30,6 @@
 
 ;; vega-view is an Emacs Lisp library for visualizing Vega
 ;; spcifications.
-
-(unless (package-installed-p 'parseedn)
-  (package-install 'parseedn))
 
 (require 'cl-lib)
 (require 'parseedn)
@@ -155,7 +153,7 @@ resulting SVG in the `*vega*` buffer."
 (provide 'vega-view)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; A test visualization
+;; An example visualization
 
 ;; (require 'seq)
 
