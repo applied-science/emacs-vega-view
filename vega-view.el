@@ -3,10 +3,10 @@
 ;; Copyright (C) 2020 Jack Rusher
 
 ;; Author: Jack Rusher <jack@appliedscience.studio>
-;; URL: http://www.github.com/applied-science/emacs-vega-view
+;; URL: https://www.github.com/applied-science/emacs-vega-view
 ;; Created: 20200330
 ;; Keywords: multimedia
-;; Package-Requires: ((emacs "25") (parseedn "0.1"))
+;; Package-Requires: ((emacs "25") (cider 0.24.0) (parseedn "0.1"))
 ;; Version: 0.1.0
 
 ;; This file is not part of GNU Emacs.
@@ -32,7 +32,9 @@
 ;; spcifications.
 
 (require 'cl-lib)
+(require 'cider)
 (require 'parseedn)
+(require 'json)
 
 ;;; Code:
 
