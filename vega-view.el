@@ -46,23 +46,22 @@
 
 (defvar vega-view-base-directory nil
   "If this value is set non-nil, vega view will use it as the
-  base directory for resources loaded by the Vega command line
-  tools.  Otherwise, the default directory of the buffer in which
-  view-vega is invoked will be used.  This is useful if your Vega
-  specification makes reference by relative path to external
-  resources, like external JSON datasets or geojson map data.")
+base directory for resources loaded by the Vega command line
+tools.  Otherwise, the default directory of the buffer in which
+view-vega is invoked will be used.  This is useful if your Vega
+specification makes reference by relative path to external
+resources, like external JSON datasets or geojson map data.")
 
 (defvar vega-view-prefer-png nil
   "If this value is set non-nil, vega view will always try to
-  render to PNG.  Otherwise, it will use SVG whenever possible.
-  This is useful in situations where one's Emacs can't properly
-  display SVG, but thinks it can, or for performance when one is
-  sure that the drawings will be smaller as PNG than SVG.")
+render to PNG.  Otherwise, it will use SVG whenever possible.
+This is useful in situations where one's Emacs can't properly
+display SVG, but thinks it can, or for performance when one is
+sure that the drawings will be smaller as PNG than SVG.")
 
 (defun vega-view--json (json-string vega-buffer)
   "Passes `JSON-STRING` through the Vega command line tools,
-displaying the resulting SVG in `VEGA-BUFFER` using `image-mode'
-."
+displaying the resulting SVG in `VEGA-BUFFER` using `image-mode'."
   (cl-assert (or (image-type-available-p 'svg) (image-type-available-p 'png))
              nil
              "vega-view requires an emacs that supports either SVG or PNG!")
