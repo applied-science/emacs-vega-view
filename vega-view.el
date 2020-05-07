@@ -7,7 +7,7 @@
 ;; Created: 20200330
 ;; Keywords: multimedia
 ;; Package-Requires: ((emacs "25") (cider "0.24.0") (parseedn "0.1"))
-;; Version: 0.1.0
+;; Package-Version: 0.1.0
 
 ;; This file is not part of GNU Emacs.
 
