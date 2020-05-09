@@ -146,7 +146,7 @@ resulting SVG in the `*vega*` buffer."
                                      (mapcar #'car supported-modes))))))
     (let ((sexp-string (if (or (eq major-mode 'clojure-mode)
                                (eq major-mode 'cider-repl-mode))
-                           (cider-sexp-at-point)
+                           (cider-last-sexp)
                          (thing-at-point 'sexp 'no-props))))
       (cl-assert (and (stringp sexp-string) (> (length sexp-string) 0))
                  nil
