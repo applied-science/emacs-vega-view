@@ -5,9 +5,9 @@
 ;; Author: Jack Rusher <jack@appliedscience.studio>
 ;; URL: https://www.github.com/applied-science/emacs-vega-view
 ;; Created: 20200330
+;; Version: 0.1.0
 ;; Keywords: multimedia
 ;; Package-Requires: ((emacs "25") (cider "0.24.0") (parseedn "0.1"))
-;; Package-Version: 0.1.0
 
 ;; This file is not part of GNU Emacs.
 
