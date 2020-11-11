@@ -1,3 +1,5 @@
+[![MELPA](https://melpa.org/packages/vega-view-badge.svg)](https://melpa.org/#/vega-view)
+
 # emacs-vega-view
 
 This is a small library meant to facilitate exploratory data
