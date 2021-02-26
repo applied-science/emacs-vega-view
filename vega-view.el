@@ -136,6 +136,8 @@ resulting SVG in the `*vega*` buffer."
   (interactive)
   (let* ((supported-modes '((cider-repl-mode vega-view--clojure)
                             (clojure-mode vega-view--clojure)
+                            (clojurec-mode vega-view--clojure)
+                            (clojurescript-mode vega-view--clojure)
                             (emacs-lisp-mode vega-view--elisp)
                             (lisp-interaction-mode vega-view--elisp)
                             (json-mode vega-view--json)
