@@ -129,6 +129,7 @@ pass it to `vega-view--json' to display in `VEGA-BUFFER`."
                                   (cider-emit-into-popup-buffer buffer warning 'font-lock-warning-face t)))))
 
 ;; TODO should come in "view-preceding-sexp" and "view-defun" versions
+;;;###autoload
 (defun vega-view ()
   "Convert the preceding sexp (in supported languages) to JSON
 and pass it through the Vega command line tools, then display the
