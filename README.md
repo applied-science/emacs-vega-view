@@ -172,7 +172,7 @@ plot twenty random values as a line chart:
                      (range 1 20)
                      (repeat :b)
                      (repeatedly #(* 100 (Math/random))))}
-   :mark "bar",
+   :mark "line",
    :width 800
    :height 600
    :encoding {:x {:field :a, :type "ordinal", :axis {"labelAngle" 0}},
