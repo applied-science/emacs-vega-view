@@ -51,7 +51,8 @@ Vega-view currently supports a single interactive function,
 it as a Vega plot. Currently, three kinds of Vega notation are
 supported:
 
-* `JSON`, which is passed directly to Vega.
+* `JSON`, which is passed directly to Vega. Common Lisp is also
+  supported by generating the JSON to send directly to Vega.
 * `elisp`, which is evaluated and converted to `JSON` before being
   passed to Vega. The `elisp` Vega specification format is, not
   coincidentally, the same as what is produced by called `read-json`
@@ -180,6 +181,17 @@ plot twenty random values as a line chart:
 ```
 
 ![clojure example plot](https://raw.githubusercontent.com/appliedsciencestudio/emacs-vega-view/master/clojure-example.svg?sanitize=true)
+
+### Common Lisp
+The Common Lisp library [Lisp-Stat](https://github.com/Lisp-Stat)'s
+[plot](https://github.com/Lisp-Stat/plot) library supports generating
+Vega-Lite specifications from its data-frame data type. Similar to the
+Clojure support, invoking `vega-view` on a variable or expression that
+returns a JSON Vega-Lite spec in either a `slime-repl-mode` or
+`lisp-mode` buffer will evaluate it in the current REPL context and
+pass the string to the `vega-view` processing for `JSON`.
+
+![Common Lisp/SLIME example for generating a plot](./common-lisp-example.png)
 
 ## TODO
 
